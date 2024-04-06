@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">GeoQuiz</string>
+
+    <!--    app questions  -->
+    <string name="question_london">Is London the capital of Great Britain?</string>
+    <string name="question_rome">Is Rome the capital of Italy?</string>
+    <string name="question_milan">Is Milan a city based in Italy?</string>
+    <string name="question_new_york">Is New York city the capital of USA?</string>
+    <string name="question_washington_dc">Is Washington D.C. the capital of USA?</string>
+    <string name="question_tokyo">Is Tokyo the biggest city of Japan?</string>
+    <string name="question_osaka">Is Osaka the capital of Japan?</string>
+    <string name="question_africa">The source of the Nile River is in Egypt.</string>
+    <string name="question_americas">The Amazon River is the longest river in the Americas.</string>
+    <string name="question_oceans">The Pacific Ocean is larger than the Atlantic Ocean.</string>
+    <string name="question_mideast">The Suez Canal connects the Red Sea and the Indian Ocean.</string>
+
+
+    <string name="true_button">Yep</string>
+    <string name="false_button">Nope</string>
+    <string name="correct_toast">Correct!</string>
+    <string name="incorrect_toast">Incorrect!</string>
+    <string name="next_question">Next</string>
+    <string name="prev_question">Prev</string>
+    <string name="stat">Congrats! You finished with a %1$.2f of correct answers!</string>
+    <!--    <string name="lolo">LOLOLO</string>-->
+</resources>
