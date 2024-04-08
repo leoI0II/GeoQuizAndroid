@@ -23,4 +23,12 @@
     <string name="prev_question">Prev</string>
     <string name="stat">Congrats! You finished with a %1$.2f of correct answers!</string>
     <!--    <string name="lolo">LOLOLO</string>-->
+
+    <string name="warning_text">Are you sure you want to do this?</string>
+    <string name="show_answer_btn">Show answer</string>
+    <string name="cheat_btn">Cheat!</string>
+    <string name="judgment_toast">Cheating is wrong!</string>
+
+    <string name="tit">test</string>
+
 </resources>
