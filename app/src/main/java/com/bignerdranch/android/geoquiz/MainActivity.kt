@@ -1,10 +1,14 @@
 package com.bignerdranch.android.geoquiz
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.bignerdranch.android.geoquiz.databinding.ActivityMainBinding
 
@@ -22,6 +26,11 @@ class MainActivity : AppCompatActivity() {
     private val givenAnswers : Answers = Answers()
 
     private val quizViewModel : QuizViewModel by viewModels()
+
+    private val cheatLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        result: ActivityResult ->
+        // handle the result
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +81,13 @@ class MainActivity : AppCompatActivity() {
         binding.prevBtn.setOnClickListener { view : View ->
             quizViewModel.moveToPrev()
             updateQuestionTextView()
+        }
+
+        binding.cheatBtn.setOnClickListener { view: View ->
+            // START CHEAT ACTIVITY
+            val intent = CheatActivity.newIntent(this@MainActivity, quizViewModel.currentQuestionAnswer)
+//            startActivity(intent)
+            cheatLauncher.launch(intent)
         }
 
         updateQuestionTextView()
