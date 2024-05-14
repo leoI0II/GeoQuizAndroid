@@ -1,5 +1,6 @@
 package com.bignerdranch.android.geoquiz
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -27,9 +28,16 @@ class MainActivity : AppCompatActivity() {
 
     private val quizViewModel : QuizViewModel by viewModels()
 
-    private val cheatLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+    private val cheatLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ){
         result: ActivityResult ->
         // handle the result
+//        if (result.resultCode == Activity.RESULT_OK)
+        quizViewModel.isCheater = result.data?.getBooleanExtra(EXTRA_ANSWER_SHOWN, false) ?: false
+        quizViewModel.currentQuestion.cheatedQuestion = true
+        binding.cheatBtn.setText(R.string.already_cheated_btn)
+        binding.cheatBtn.isEnabled = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,6 +124,14 @@ class MainActivity : AppCompatActivity() {
 
             binding.falseBtn.isEnabled = !quizViewModel.currentQuestion.answered
             binding.trueBtn.isEnabled = !quizViewModel.currentQuestion.answered
+            binding.cheatBtn.isEnabled = !quizViewModel.currentQuestion.answered && !quizViewModel.currentQuestion.cheatedQuestion
+            binding.cheatBtn.setText(
+                if (!quizViewModel.currentQuestion.answered && !quizViewModel.currentQuestion.cheatedQuestion)
+                    R.string.cheat_btn
+                else
+                    R.string.already_cheated_btn
+            )
+
         }
     }
 
@@ -131,15 +147,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkAnswer(answer : Boolean) {
         val correctAnswer = quizViewModel.currentQuestionAnswer
-        val messageResId = if (answer == correctAnswer) {
-            R.string.correct_toast.also { givenAnswers.correct++ }
-        }
-        else{
-            R.string.incorrect_toast.also { givenAnswers.incorrect++ }
-        }
-        Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
+        val givenRightAnswer = answer == correctAnswer
 
-        quizViewModel.currentQuestion.answered = true
+        val messageId = when {
+            givenRightAnswer ->
+                if (quizViewModel.isCheater)
+                    R.string.judgment_toast
+                else
+                    R.string.correct_toast
+            else -> R.string.incorrect_toast
+        }
+        Toast.makeText(this, messageId, Toast.LENGTH_SHORT).show()
+        quizViewModel.currentQuestion.answered = givenRightAnswer
+        if (quizViewModel.isCheater && givenRightAnswer) {
+            quizViewModel.isCheater = false
+        }
     }
 
     override fun onStart() {

@@ -27,6 +27,7 @@
     <string name="warning_text">Are you sure you want to do this?</string>
     <string name="show_answer_btn">Show answer</string>
     <string name="cheat_btn">Cheat!</string>
+    <string name="already_cheated_btn">You already cheated!</string>
     <string name="judgment_toast">Cheating is wrong!</string>
     <string name="cheat_answer_text">Answer</string>
     <string name="cheat_true_answer">TRUE</string>
