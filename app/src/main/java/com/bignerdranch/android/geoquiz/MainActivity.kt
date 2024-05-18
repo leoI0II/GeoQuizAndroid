@@ -2,6 +2,9 @@ package com.bignerdranch.android.geoquiz
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.RenderEffect
+import android.graphics.Shader
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +14,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import com.bignerdranch.android.geoquiz.databinding.ActivityMainBinding
 
 private var TAG = "MainActivity"
@@ -35,9 +39,17 @@ class MainActivity : AppCompatActivity() {
         // handle the result
 //        if (result.resultCode == Activity.RESULT_OK)
         quizViewModel.isCheater = result.data?.getBooleanExtra(EXTRA_ANSWER_SHOWN, false) ?: false
-        quizViewModel.currentQuestion.cheatedQuestion = true
-        binding.cheatBtn.setText(R.string.already_cheated_btn)
-        binding.cheatBtn.isEnabled = false
+        manageCheating()
+    }
+
+    private fun manageCheating(){
+        quizViewModel.currentQuestion.cheatedQuestion = quizViewModel.isCheater
+        if (quizViewModel.isCheater) {
+            binding.cheatBtn.setText(R.string.already_cheated_btn)
+            binding.cheatBtn.isEnabled = false
+            quizViewModel.remainCheatCount -= 1
+            binding.leftCheatCount.text = getString(R.string.cheats_available, quizViewModel.remainCheatCount)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,6 +111,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         updateQuestionTextView()
+
+        binding.leftCheatCount.text = getString(R.string.cheats_available, quizViewModel.remainCheatCount)
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+//            blurCheatButton()
+//        }
     }
 
     private fun enableAllBtns(enable : Boolean) {
@@ -124,14 +142,18 @@ class MainActivity : AppCompatActivity() {
 
             binding.falseBtn.isEnabled = !quizViewModel.currentQuestion.answered
             binding.trueBtn.isEnabled = !quizViewModel.currentQuestion.answered
-            binding.cheatBtn.isEnabled = !quizViewModel.currentQuestion.answered && !quizViewModel.currentQuestion.cheatedQuestion
+            binding.cheatBtn.isEnabled = !quizViewModel.currentQuestion.answered && !quizViewModel.currentQuestion.cheatedQuestion && quizViewModel.remainCheatCount > 0
             binding.cheatBtn.setText(
-                if (!quizViewModel.currentQuestion.answered && !quizViewModel.currentQuestion.cheatedQuestion)
+                if (quizViewModel.currentQuestion.cheatedQuestion)
+                    R.string.already_cheated_btn
+                else if (quizViewModel.remainCheatCount == 0)
+                    R.string.exceed_cheat_count
+                else if (!quizViewModel.currentQuestion.answered && !quizViewModel.currentQuestion.cheatedQuestion)
                     R.string.cheat_btn
                 else
-                    R.string.already_cheated_btn
+                    R.string.cheat_btn
             )
-
+            binding.leftCheatCount.text = getString(R.string.cheats_available, quizViewModel.remainCheatCount)
         }
     }
 
@@ -162,6 +184,12 @@ class MainActivity : AppCompatActivity() {
         if (quizViewModel.isCheater && givenRightAnswer) {
             quizViewModel.isCheater = false
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun blurCheatButton() {
+        val effect = RenderEffect.createBlurEffect(10.0f, 10.0f, Shader.TileMode.CLAMP)
+        binding.cheatBtn.setRenderEffect(effect)
     }
 
     override fun onStart() {

@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 private const val TAG = "QuizViewModel"
 const val CURRENT_INDEX_KEY = "CURRENT_INDEX_KEY"
 const val IS_CHEATER_KEY = "IS_CHEATER_KEY"
+const val MAX_CHEAT_COUNT = 3
+const val CHEAT_REMAIN_KEY = "CHEAT_REMAIN_KEY"
 
 class QuizViewModel(private val savedStateHandle : SavedStateHandle) : ViewModel() {
 
@@ -27,6 +29,9 @@ class QuizViewModel(private val savedStateHandle : SavedStateHandle) : ViewModel
         get() = savedStateHandle.get<Int>(CURRENT_INDEX_KEY) ?: 0
         set(value) = savedStateHandle.set(CURRENT_INDEX_KEY, value)
 
+    var remainCheatCount : Int
+        get() = savedStateHandle.get<Int>(CHEAT_REMAIN_KEY) ?: MAX_CHEAT_COUNT
+        set(value) = savedStateHandle.set(CHEAT_REMAIN_KEY, value)
     val questionBankSize : Int
         get() = questionsBank.size
 

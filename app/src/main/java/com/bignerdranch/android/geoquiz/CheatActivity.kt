@@ -48,6 +48,8 @@ class CheatActivity : AppCompatActivity() {
 //            insets
 //        }
 
+        binding.apiVersionTextView.text = getString(R.string.api_version_lvl, android.os.Build.VERSION.SDK_INT)
+
         binding.showAnswerBtn.setOnClickListener { view : View ->
             val answerText = when {
                 answerIsTrue -> R.string.cheat_true_answer

@@ -22,12 +22,15 @@
     <string name="next_question">Next</string>
     <string name="prev_question">Prev</string>
     <string name="stat">Congrats! You finished with a %1$.2f of correct answers!</string>
+    <string name="api_version_lvl">API Level %1$d</string>
     <!--    <string name="lolo">LOLOLO</string>-->
 
     <string name="warning_text">Are you sure you want to do this?</string>
     <string name="show_answer_btn">Show answer</string>
     <string name="cheat_btn">Cheat!</string>
     <string name="already_cheated_btn">You already cheated!</string>
+    <string name="exceed_cheat_count">No cheat left!</string>
+    <string name="cheats_available">Cheats available: %1$d</string>
     <string name="judgment_toast">Cheating is wrong!</string>
     <string name="cheat_answer_text">Answer</string>
     <string name="cheat_true_answer">TRUE</string>
